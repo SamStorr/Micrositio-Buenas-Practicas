@@ -92,7 +92,9 @@ export function AdminDataEntry({ onSave, onClose, existingProjects, onClearAll, 
     mapY: '' as string | number,
     // Implementation states
     implementationStates: [] as string[],
-    isNationalProject: false
+    isNationalProject: false,
+    // Convocatoria
+    convocatoria: 'Primera Convocatoria 2025'
   });
 
   const generateCoordinates = (state: string, municipality: string) => {
@@ -167,6 +169,8 @@ export function AdminDataEntry({ onSave, onClose, existingProjects, onClearAll, 
       // Implementation states (excluding main state to avoid duplication)
       implementationStates: formData.implementationStates.length > 0 ? formData.implementationStates : undefined,
       isNationalProject: formData.isNationalProject || undefined,
+      // Convocatoria
+      convocatoria: formData.convocatoria || 'Primera Convocatoria 2025',
       // Legacy compatibility
       description: formData.objective, // Use objective as description for legacy
       location: {
@@ -228,7 +232,8 @@ export function AdminDataEntry({ onSave, onClose, existingProjects, onClearAll, 
       footerTiktokUrl: '',
       footerYoutubeUrl: '',
       implementationStates: [],
-      isNationalProject: false
+      isNationalProject: false,
+      convocatoria: 'Primera Convocatoria 2025'
     });
   };
 
@@ -273,7 +278,8 @@ export function AdminDataEntry({ onSave, onClose, existingProjects, onClearAll, 
       footerTiktokUrl: project.footerTiktokUrl || '',
       footerYoutubeUrl: project.footerYoutubeUrl || '',
       implementationStates: project.implementationStates || [],
-      isNationalProject: project.isNationalProject || false
+      isNationalProject: project.isNationalProject || false,
+      convocatoria: project.convocatoria || 'Primera Convocatoria 2025'
     });
     
     // Scroll to form panel when editing
@@ -411,6 +417,20 @@ export function AdminDataEntry({ onSave, onClose, existingProjects, onClearAll, 
                       placeholder="Nombre de la organización responsable"
                       required
                     />
+                  </div>
+
+                  {/* Convocatoria */}
+                  <div>
+                    <label className="block mb-2 font-medium">📅 Convocatoria</label>
+                    <Input
+                      value={formData.convocatoria}
+                      onChange={(e) => setFormData({...formData, convocatoria: e.target.value})}
+                      placeholder="Ej: Primera Convocatoria 2025, Segunda Convocatoria 2026"
+                      required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      💡 El color del pin en el mapa se asignará automáticamente según la convocatoria
+                    </p>
                   </div>
 
                   {/* Categoría de participación */}

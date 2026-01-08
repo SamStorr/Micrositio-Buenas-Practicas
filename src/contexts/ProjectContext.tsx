@@ -68,7 +68,12 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
         if (mounted) {
           if (serverProjects.length > 0) {
             console.log(`✅ Loaded ${serverProjects.length} projects from cloud`);
-            setProjects(serverProjects);
+            // Ensure all projects without convocatoria get "Primera Convocatoria 2025"
+            const migratedProjects = serverProjects.map(project => ({
+              ...project,
+              convocatoria: project.convocatoria || 'Primera Convocatoria 2025'
+            }));
+            setProjects(migratedProjects);
           } else {
             // If no projects on server, initialize with sample data
             console.log('📦 Initializing with sample projects...');
@@ -79,8 +84,12 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
         console.error('Error loading projects:', error);
         if (mounted) {
           toast.error('Failed to load projects. Please refresh the page.');
-          // Fallback to initial data
-          setProjects(initialProjectsData);
+          // Fallback to initial data with convocatoria
+          const migratedProjects = initialProjectsData.map(project => ({
+            ...project,
+            convocatoria: project.convocatoria || 'Primera Convocatoria 2025'
+          }));
+          setProjects(migratedProjects);
         }
       } finally {
         if (mounted) {

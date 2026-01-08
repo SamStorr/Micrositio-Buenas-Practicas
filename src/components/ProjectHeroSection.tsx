@@ -2,6 +2,7 @@ import { X, Share2, MapPin, Building2, Calendar } from 'lucide-react';
 import { Project } from '../types';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ShareButton } from './ShareButton';
+import { getConvocatoriaBadgeClass } from '../utils/convocatoriaColors';
 
 interface ProjectHeroSectionProps {
   project: Project;
@@ -110,6 +111,15 @@ export function ProjectHeroSection({ project, onClose }: ProjectHeroSectionProps
             </span>
           </div>
         </div>
+
+        {/* Convocatoria Badge - centered below metadata */}
+        {project.convocatoria && (
+          <div className="mb-6 sm:mb-8 animate-hero-fade-in" style={{ animationDelay: '250ms' }}>
+            <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-['Arvo',_serif] ${getConvocatoriaBadgeClass(project.convocatoria)} shadow-lg`}>
+              📅 {project.convocatoria}
+            </span>
+          </div>
+        )}
 
         {/* Quick Description */}
         {project.objective && (

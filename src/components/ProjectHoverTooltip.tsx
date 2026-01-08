@@ -2,6 +2,7 @@ import React from 'react';
 import { Project } from '../types';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { MapPin } from 'lucide-react';
+import { getConvocatoriaBadgeClass } from '../utils/convocatoriaColors';
 
 interface ProjectHoverTooltipProps {
   project: Project;
@@ -83,6 +84,15 @@ export function ProjectHoverTooltip({
           <p className="font-['Arvo',_serif] text-[13px] leading-tight text-white text-opacity-90">
             {project.organization}
           </p>
+          
+          {/* Convocatoria Badge */}
+          {project.convocatoria && (
+            <div className="flex items-center gap-1.5">
+              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-white text-[10px] font-['Arvo',_serif] ${getConvocatoriaBadgeClass(project.convocatoria)}`}>
+                📅 {project.convocatoria}
+              </span>
+            </div>
+          )}
           
           {/* Location Info with pin icon (Bottom) */}
           <div className="flex items-start gap-1.5 pt-1">

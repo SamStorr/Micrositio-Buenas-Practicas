@@ -8,6 +8,7 @@ export interface Project {
   municipality: string; // Ubicación territorial /Municipios implementación
   implementationStates?: string[]; // Additional states where project is implemented
   isNationalProject?: boolean; // Flag to indicate if this is a national project (all states)
+  convocatoria?: string; // Convocatoria (e.g., "Primera Convocatoria 2025")
   objective: string; // Objetivo principal
   beneficiaries: string; // Beneficiarios/ Participantes directos
   riskFactors?: string; // Factores de riesgo identificados

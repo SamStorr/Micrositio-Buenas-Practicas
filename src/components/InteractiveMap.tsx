@@ -7,6 +7,7 @@ import { ClusterMarker } from './ClusterMarker';
 import { ClusterTooltip } from './ClusterTooltip';
 import { Project } from '../types';
 import { getCategoryColor } from '../utils/categoryColors';
+import { getConvocatoriaColor, registerConvocatorias } from '../utils/convocatoriaColors';
 import { clusterMarkers, Cluster } from '../utils/markerClustering';
 import { STATE_SVG_IDS } from '../data/stateMapCoordinates';
 import { Button } from './ui/button';
@@ -53,6 +54,14 @@ export const InteractiveMap = memo(function InteractiveMap({ onInteractionChange
   const clusters = useMemo(() => {
     return clusterMarkers(filteredProjects, transform.scale);
   }, [filteredProjects, transform.scale]);
+
+  // Register convocatorias for consistent color assignment
+  useEffect(() => {
+    const convocatorias = filteredProjects
+      .map(p => p.convocatoria)
+      .filter((c): c is string => !!c);
+    registerConvocatorias(convocatorias);
+  }, [filteredProjects]);
 
   // Notify parent of map interaction
   const notifyInteraction = useCallback(() => {
@@ -580,7 +589,7 @@ export const InteractiveMap = memo(function InteractiveMap({ onInteractionChange
                 // Single project in cluster - render as individual marker
                 const project = cluster.projects[0];
                 const isHovered = hoveredProject?.id === project.id;
-                const categoryColor = getCategoryColor(project.category);
+                const convocatoriaColor = getConvocatoriaColor(project.convocatoria);
                 
                 // Convert percentage coordinates to absolute pixel coordinates
                 // relative to the map's fixed size (2638px × 1822px)
@@ -606,25 +615,25 @@ export const InteractiveMap = memo(function InteractiveMap({ onInteractionChange
                       animationDelay: `${index * 0.02}s`
                     }}
                   >
-                    {/* Hover effect background - uses category color */}
+                    {/* Hover effect background - uses convocatoria color */}
                     {isHovered && (
                       <div 
                         className="absolute inset-0 w-8 h-8 rounded-full opacity-60 animate-pulse-glow transform -translate-x-1/2 -translate-y-1/2"
                         style={{
                           transform: `translate(-50%, -50%) scale(${1 / transform.scale})`,
-                          backgroundColor: categoryColor.glow,
-                          boxShadow: `0 0 20px ${categoryColor.glow}`
+                          backgroundColor: convocatoriaColor.glow,
+                          boxShadow: `0 0 20px ${convocatoriaColor.glow}`
                         }}
                       />
                     )}
                     
-                    {/* Main marker - category colored with smooth animations */}
+                    {/* Main marker - convocatoria colored with smooth animations */}
                     <div
                       className="relative cursor-pointer touch-feedback touch-smooth mobile-tap-target"
                       style={{
                         transform: `scale(${1 / transform.scale}) scale(1)`,
                         transformOrigin: 'center',
-                        filter: isHovered ? `drop-shadow(0 0 6px ${categoryColor.glow})` : 'none'
+                        filter: isHovered ? `drop-shadow(0 0 6px ${convocatoriaColor.glow})` : 'none'
                       }}
                       onClick={() => {
                         // On hover devices, clicking opens details immediately
@@ -652,7 +661,7 @@ export const InteractiveMap = memo(function InteractiveMap({ onInteractionChange
                           {/* Outer pin shape */}
                           <path 
                             d={svgPaths.p1a33c0f0} 
-                            fill={isHovered ? categoryColor.hover : categoryColor.primary}
+                            fill={isHovered ? convocatoriaColor.hover : convocatoriaColor.primary}
                             className="transition-colors duration-300"
                             style={{
                               filter: `drop-shadow(0 2px 4px rgba(0,0,0,0.3))`

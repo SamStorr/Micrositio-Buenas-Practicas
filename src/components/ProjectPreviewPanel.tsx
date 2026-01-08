@@ -6,6 +6,7 @@ import { categoryOptions, thematicAreaOptions } from '../data/projects';
 import { useProjects } from '../contexts/ProjectContext';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ShareButton } from './ShareButton';
+import { getConvocatoriaBadgeClass } from '../utils/convocatoriaColors';
 
 interface ProjectPreviewPanelProps {
   project: Project;
@@ -118,6 +119,15 @@ export const ProjectPreviewPanel = memo(function ProjectPreviewPanel({ project, 
               </span>
             )}
           </div>
+
+          {/* Convocatoria Badge */}
+          {project.convocatoria && (
+            <div className="mb-3 sm:mb-4">
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-white text-xs font-['Arvo',_serif] ${getConvocatoriaBadgeClass(project.convocatoria)}`}>
+                📅 {project.convocatoria}
+              </span>
+            </div>
+          )}
 
           {/* Title Block - Project Title + Organization Name grouped closely - Mobile optimized */}
           <div className="mb-4 sm:mb-5">
