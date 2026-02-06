@@ -23,6 +23,12 @@ jobs:
         run: npm install --legacy-peer-deps
       - name: Build
         run: npm run build
+      - name: Upload for Download (Manual)
+        uses: actions/upload-artifact@v4
+        with:
+          name: single-file-build
+          path: build/index.html  # This points to your new single file
+          retention-days: 1
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
