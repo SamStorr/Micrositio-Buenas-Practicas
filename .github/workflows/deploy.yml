@@ -26,7 +26,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist/' # Or 'build/' depending on your package.json
+          path: 'build/' # Or 'build/' depending on your package.json
 
   deploy:
     needs: build_site
